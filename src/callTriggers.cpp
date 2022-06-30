@@ -9,15 +9,15 @@
  *  50 predefined cases for the triggers and it is easier for someone to edit them
  */
 
-#ifndef EasyNextionLibrary_h
-#include "EasyNextionLibrary.h"
+#ifndef nextion_ez_h
+#include "nextion_ez.h"
 #endif                        
                                 
 #ifndef trigger_h
 #include "trigger.h"
 #endif
 
-void EasyNex::callTriggerFunction(){
+void nextion_ez::callTriggerFunction(){
   
  uint8_t _tempRead = _serial->read();  // We read the next byte, which, according to our protocol, is the < Trigger ID >
                                 // From Nextion we send: < printh 23 02 54 xx >

@@ -1,5 +1,6 @@
 /*!
- * EasyNextionLibrary.h - Easy library for Nextion Displays
+ * nextion_ez.h - Easy library for Nextion Displays
+ * Copyright (c) 2022 Charles Current
  * Copyright (c) 2020 Athanasios Seitanis < seithagta@gmail.com >. 
  * All rights reserved under the library's licence
  */
@@ -13,8 +14,8 @@
   //------------------------------------------------------
  // ensure this library description is only included once
 //--------------------------------------------------------
-#ifndef EasyNextionLibrary_h
-#define EasyNextionLibrary_h
+#ifndef nextion_ez_h
+#define nextion_ez_h
 
 
 
@@ -27,7 +28,7 @@
   //---------------------------------------
  // library interface description
 //-----------------------------------------
-class EasyNex {
+class nextion_ez {
   
     //--------------------------------------- 
 	 // user-accessible "public" interface
@@ -39,8 +40,8 @@ class EasyNex {
    * initialization data: unsigned long baud = 9600 (default) if nothing written in the begin()
    * myObject.begin(115200); for baud rate 115200
    * 
-   * -- EasyNex(HardwareSerial& serial): The constructor of the class that has the parameter of the Serial we use
-   * EasyNex.myObject(Serial);  or Serial1, Serial2....
+   * -- nextion_ez(HardwareSerial& serial): The constructor of the class that has the parameter of the Serial we use
+   * nextion_ez.myObject(Serial);  or Serial1, Serial2....
    *
    * -- writeNum(String, unsigned int): for writing in components' numeric attribute
    * String = objectname.numericAttribute (example: "n0.val"  or "n0.bco".....etc)
@@ -55,17 +56,18 @@ class EasyNex {
    * Syntax: | myObject.writeStr("t0.txt", "Hello World");  |  or  | myObject.writeNum("b0.txt", "Button0"); |
    *         | set the value of textbox t0 to "Hello World" |      | set the text of button b0 to "Button0"  |
    * 
-   * -- NextionListen(): It uses a custom protocol to identify commands from Nextion Touch Events
+   * -- listen(): It uses a custom protocol to identify commands from Nextion Touch Events
    * For advanced users: You can modify the custom protocol to add new group commands.
    * More info on custom protocol: https://www.seithan.com/  and on the documentation of the library
    * WARNING: This function must be called repeatedly to response touch events
    * from Nextion touch panel. Actually, you should place it in your loop function.
    * 
-   * -- readNumber(String): We use it to read the value of a components' numeric attribute
+   * -- readNum(String): We use it to read the value of a components' numeric attribute
    * In every component's numeric attribute (value, bco color, pco color...etc)
    * String = objectname.numericAttribute (example: "n0.val", "n0.pco", "n0.bco"...etc)
    * Syntax: | myObject.readNumber("n0.val"); |  or  | myObject.readNumber("b0.bco");                       |
    *         | read the value of numeric n0   |      | read the color number of the background of button b0 |
+   * 
    * -- readStr(String): We use it to read the value of every components' text attribute from Nextion (txt etc...)
    * String = objectname.textAttribute (example: "t0.txt", "va0.txt", "b0.txt"...etc)
    * Syntax: String x = myObject.readStr("t0.txt"); // Store to x the value of text box t0
@@ -78,12 +80,22 @@ class EasyNex {
    
 
 	public:
-    EasyNex(HardwareSerial& serial);
-		void begin(unsigned long baud = 9600);
+    nextion_ez(HardwareSerial& serial);
+    int getCurrentPage();
+    int getLastPage();
+    bool cmdAvail();
+    int getCmd();
+    int getSubCmd();
+    int getCmdLen();
+	void begin(unsigned long baud = 9600);
     void writeNum(String, uint32_t);
-    void writeStr(String, String txt = "cmd");
-		void NextionListen(void);
-    uint32_t readNumber(String);
+    void writeByte(uint8_t val);
+    void pushCmdArg(uint32_t val);
+    void sendCmd(String);
+    void addWave(uint8_t id, uint8_t channel, uint8_t val);
+    void writeStr(String, String);
+	void listen(void);
+    uint32_t readNum(String);
     String readStr(String);
     int readByte();
     
@@ -105,24 +117,21 @@ class EasyNex {
      *
      * cmdLength: ONLY for custom commands stores the length of the command
      */ 
-    int currentPageId;  
-    int lastCurrentPageId;
-    byte cmdGroup;
-    byte cmdLength;
+
     
     
-    //--------------------------------------- 
+      //--------------------------------------- 
 	 // library-accessible "private" interface
-  //-----------------------------------------
+    //-----------------------------------------
 	private:
     HardwareSerial* _serial;
-		void readCommand(void);
-    void callTriggerFunction(void);
+	void readCommand(void);
+    //void callTriggerFunction(void);
     
       //----------------------------------------------
      // for function writeNum() (write to numeric attribute)
     //------------------------------------------------
-		String _component;     // Also used in writeStr()
+	String _component;     // Also used in writeStr()
     uint32_t _numVal;
     
       //--------------------------------------------
@@ -130,21 +139,36 @@ class EasyNex {
     //----------------------------------------------
     String _strVal;
     
-		  //---------------------------------------
-		 // for function readNumber()
+	  //---------------------------------------
+	 // for function sendCmd()
     //-----------------------------------------
-		String _comp;
-		uint8_t _numericBuffer[4];
-		uint32_t _numberValue;
+    uint32_t _cmdFifo[16];
+    uint8_t _cmdFifoHead;
+    uint8_t _cmdFifoTail;
+
+	  //---------------------------------------
+	 // for function readNum()
+    //-----------------------------------------
+	String _comp;
+	uint8_t _numericBuffer[4];
+	uint32_t _numberValue;
     
       //---------------------------------------
-		 // for General functions  
+	 // for General functions  
     //-----------------------------------------
     char _start_char;
     unsigned long _tmr1;
+
     bool _cmdFound;
     uint8_t _cmd1;
     uint8_t _len;
+    bool _cmdAvail;
+    byte _cmdGroup;
+    byte _cmdLength;
+    byte _subCmd;
+
+    int _currentPageId;  
+    int _lastCurrentPageId;
     
       //---------------------------------------
 		 // for function readStr()

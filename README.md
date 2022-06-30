@@ -20,15 +20,17 @@ If you find this library useful, please consider supporting the author of the or
 - `writeNum()`
 - `writeStr()`
 - `sendCmd()`
+- `pushArg()`
 - `addWave()`
 - `readNum()`
 - `readStr()` 
-- `cmdAvail()`
-- `getCmd()`
-- `getSubCmd()`
+`cmdAvail()`
+`getCmd()`
+`getSubCmd()`
 - `readByte()`
-- `getCurrentPage()`
-- `getLastPage()`
+- `writeByte()`
+`getCurrentPage()`
+`getLastPage()`
 
 In order for the object to update the Id of the current page, you must write the Preinitialize Event of every page: `printh 23 02 50 XX` , where `XX` the id of the page in HEX.
 Your code can then read the current page and previous page using the `getCurrentPage()` and `getLastPage()` functions.
@@ -53,22 +55,22 @@ Example:
 You can read/write the variables as any other component.
 
 Use `readNum()` to read the value of a numeric variable.  
-Example: `nextion.readNum(STRING("va0.val"))`  
-Example: `nextion.readNum(STRING("sys0"))`
+Example: `nextion.readNum("va0.val")`  
+Example: `nextion.readNum("sys0")`
 
 Use `writeNum()` to change the value of a numeric variable.  
-Example: `nextion.writeNum(STRING("va0.val"), 255)`  
-Example: `nextion.readNumber(STRING("sys0"), 375)`
+Example: `nextion.writeNum("va0.val", 255)`  
+Example: `nextion.readNumber("sys0", 375)`
 
 Use `readStr()` to read the text of a String variable.  
-Example: `nextion.readStr(STRING("va0.txt"))`
+Example: `nextion.readStr("va0.txt")`
 
 Use `writeStr()` to change the text of a String variable.  
-Example: `nextion.writeStr(STRING("va0.txt"), STRING("Hello World"))`
+Example: `nextion.writeStr("va0.txt", "Hello World")`
 
 For this to happen, the variables you want to read/write must be at the page you are currently on.  
 Otherwise, if the variables are of **global** scope, you will need to use a prefix with the page name that the variables are at.  
-Example: `nextion.readNumber(STRING("page0.va0.val"))`   'If the variable is at page0  
+Example: `nextion.readNumber("page0.va0.val")`   'If the variable is at page0  
 The same goes for the other functions as well.
 
 **NOTE**: (from the Nextion Editor Guide)
