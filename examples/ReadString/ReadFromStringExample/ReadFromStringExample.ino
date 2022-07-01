@@ -21,11 +21,11 @@
   * With this Function you can read a string component from Nextion
   */
  
- #include "EasyNextionLibrary.h"  // Include EasyNextionLibrary
+ #include "nextion_ez.h"  // Include EasyNextionLibrary
                                  // Download the latest version https://github.com/Seithan/EasyNextionLibrary
                                  // or from Arduino's IDE Library Manager
 
-EasyNex myNex(Serial); // Create an object of EasyNex class with the name < myNex >
+nextion_ez myNex(Serial); // Create an object of EasyNex class with the name < myNex >
                        // Set as parameter the Hardware Serial you are going to use
 
 const int REFRESH_TIME = 1000;           // time to refresh the Nextion data every 1000 ms
@@ -55,7 +55,3 @@ void loop(){
     }                          
                          
 }
-
-
-
-

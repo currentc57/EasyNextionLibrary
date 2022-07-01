@@ -45,9 +45,9 @@
  int dataS[4] = {0,0,0,0}; // values from 0 to 100
                           // printh 23 03 53 00 00
 
-#include "EasyNextionLibrary.h"  // Include EasyNextionLibrary
+#include "nextion_ez.h"  // Include EasyNextionLibrary
 
-EasyNex myNex(Serial); // Create an object of EasyNex class with the name < myNex >
+nextion_ez myNex(Serial); // Create an object of EasyNex class with the name < myNex >
                        // Set as parameter the Hardware Serial you are going to use
 
 void setup(){

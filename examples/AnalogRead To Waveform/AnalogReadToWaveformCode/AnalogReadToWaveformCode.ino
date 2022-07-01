@@ -55,9 +55,9 @@
     * and at the same time display the value or whatever else you need
     */
 
-#include "EasyNextionLibrary.h" // Include EasyNextionLibrary
+#include "nextion_ez.h" // Include EasyNextionLibrary
 
-EasyNex myNex(Serial);   // Create an object of EasyNex class with the name < myNex >
+nextion_ez myNex(Serial);   // Create an object of EasyNex class with the name < myNex >
                          // Set as parameter the Hardware Serial you are going to use
                         
 uint16_t voltageGraph;   // a variable to store the reading
@@ -128,4 +128,3 @@ if(n0.val>3300)
   n0.bco=YELLOW
 }
 */
-

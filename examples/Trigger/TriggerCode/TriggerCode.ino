@@ -35,9 +35,9 @@
   }
 */
 
-#include "EasyNextionLibrary.h"  // Include EasyNextionLibrary
+#include "nextion_ez.h"  // Include EasyNextionLibrary
 
-EasyNex myNex(Serial); // Create an object of EasyNex class with the name < myNex >
+nextion_ez myNex(Serial); // Create an object of EasyNex class with the name < myNex >
                        // Set as parameter the Hardware Serial you are going to use
 
 void setup(){
