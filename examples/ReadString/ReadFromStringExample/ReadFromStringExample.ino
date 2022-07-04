@@ -41,7 +41,7 @@ void setup(){
 }
 
 void loop(){
-  myNex.NextionListen(); // WARNING: This function must be called repeatedly to response touch events
+  myNex.listen(); // WARNING: This function must be called repeatedly to response touch events
                          // from Nextion touch panel. Actually, you should place it in your loop function.
                          
  if((millis() - refresh_timer) > REFRESH_TIME){ //IMPORTANT do not have serial print commands in the loop without a delay

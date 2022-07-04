@@ -124,13 +124,13 @@ void setup(){
   delay(500);               // give Nextion some time to finish initialize
   myNex.writeStr("page 0"); // For synchronizing Nextion page in case of reset to Arduino
   delay(50);
-  myNex.lastCurrentPageId = 1; // At the first run of the loop, the currentPageId and the lastCurrentPageId
+  myNex.setLastPage(1);       // At the first run of the loop, the currentPageId and the lastCurrentPageId
                                // must have different values, due to run the function firstRefresh()
 }
 
 void loop(){
 
-  myNex.NextionListen(); // This function must be called repeatedly to response touch events
+  myNex.listen(); // This function must be called repeatedly to response touch events
                          // from Nextion touch panel. Actually, you should place it in your loop function.
   readSensorValues();
   
@@ -142,15 +142,14 @@ void loop(){
 
 void firstRefresh(){ // This function's purpose is to update the values of a new page when is first loaded,
                      // and refreshing all the components with the current values as Nextion shows the Attribute val.
-
-  if(myNex.currentPageId != myNex.lastCurrentPageId){ // If the two variables are different, means a new page is loaded.
+  if(myNex.getCurrentPage() != myNex.getLastPage()){ // If the two variables are different, means a new page is loaded.
     
     newPageLoaded = true;    // A new page is loaded
                              // This variable is used as an argument at the if() statement on the refreshPageXX() voids, 
                              // in order when is true to update all the values on the page with their current values
                              // with out run a comparison with the last value.
     
-    switch(myNex.currentPageId){
+    switch(myNex.getCurrentPage()){
       case 0:
         refreshPage0();
         break;
@@ -171,8 +170,7 @@ void firstRefresh(){ // This function's purpose is to update the values of a new
     newPageLoaded = false;  // After we have updated the new page for the first time, we update the variable to false.
                             // Now the values updated ONLY if the new value is different from the last Sent value.
                             // See void refreshPage0()
-    
-    myNex.lastCurrentPageId = myNex.currentPageId; // Afer the refresh of the new page We make them equal,
+    myNex.setLastPage(myNex.getCurrentPage());     // Afer the refresh of the new page We make them equal,
                                                    // in order to identify the next page change.
   }
 }
@@ -197,7 +195,7 @@ void readSensorValues(){
 void refereshCurrentPage(){
 // In this function we refresh the page currently loaded every DATA_REFRESH_RATE
   if((millis() - pageRefreshTimer) > DATA_REFRESH_RATE){
-    switch(myNex.currentPageId){
+    switch(myNex.getCurrentPage()){
       case 0:
         refreshPage0();
         break;

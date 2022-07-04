@@ -40,7 +40,7 @@ void setup(){
 void loop(){
 
   if((millis() - timer) > LOOP_TIME){
-    number = myNex.readNumber("n0.val");   // We read the value of n0 and store it to number variable
+    number = myNex.readNum("n0.val");   // We read the value of n0 and store it to number variable
     
     if(number != 777777){                     // 777777 is the return value if the code fails to read the new value
       lastnumber = number;                  // The chances of getting a wrong value is one in a million.
@@ -54,7 +54,7 @@ void loop(){
     
     myNex.writeNum("n1.val", number);       // After that, we send the number variable, as value to n1
     
-    number = myNex.readNumber("page0.bco"); // Read and store the background color code to number variable
+    number = myNex.readNum("page0.bco"); // Read and store the background color code to number variable
     if(number == 33823){
       myNex.writeNum("page0.bco", 63488);   // Change background color to RED(63488) if it was BLUE(33823)
     }else if(number == 63488){

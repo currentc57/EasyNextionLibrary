@@ -57,12 +57,12 @@ void setup(){
   delay(500);               // give Nextion some time to finish initialize
   myNex.writeStr("page 0"); // For synchronizing Nextion page in case of reset to Arduino
   delay(50);
-  myNex.lastCurrentPageId = 1; // At the first run of the loop, the currentPageId and the lastCurrentPageId
+  myNex.setLastPage(1); // At the first run of the loop, the currentPageId and the lastCurrentPageId
                                // must have different values, due to run the function firstRefresh()
 }
 
 void loop(){
-  myNex.NextionListen(); // WARNING: This function must be called repeatedly to response touch events
+  myNex.listen(); // WARNING: This function must be called repeatedly to response touch events
                          // from Nextion touch panel. Actually, you should place it in your loop function.
 
   firstRefresh(); 
@@ -75,7 +75,7 @@ void easyNexReadCustomCommand(){
  String numericAttribute;
 
  
-  switch(myNex.cmdGroup){
+  switch(myNex.getCmd()){
   
     case 'L': // Or <case 0x4C:>  If 'L' matches
       // we are going to write values in specific places in the dataL[] table
@@ -136,10 +136,10 @@ void easyNexReadCustomCommand(){
 void firstRefresh(){ // This function's purpose is to update the values of a new page when is first loaded,
                      // and refreshing all the components with the current values as Nextion shows the Attribute val.
 
-  if(myNex.currentPageId != myNex.lastCurrentPageId){ // If the two variables are different, means a new page is loaded.
+  if(myNex.getCurrentPage() != myNex.getLastPage()){ // If the two variables are different, means a new page is loaded.
 
     
-    switch(myNex.currentPageId){
+    switch(myNex.getCurrentPage()){
       case 0:
         myNex.writeNum("n0.val", dataL[0]);
         myNex.writeNum("n1.val", dataL[1]);
@@ -162,7 +162,7 @@ void firstRefresh(){ // This function's purpose is to update the values of a new
     }
 
     
-    myNex.lastCurrentPageId = myNex.currentPageId; // Afer the refresh of the new page We make them equal,
+    myNex.setLastPage(myNex.getCurrentPage()); // Afer the refresh of the new page We make them equal,
                                                    // in order to identify the next page change.
   }
 }

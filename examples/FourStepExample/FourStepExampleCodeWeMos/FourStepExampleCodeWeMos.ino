@@ -48,7 +48,7 @@ void setup(){
 }
 
 void loop(){
-  myNex.NextionListen(); // This function must be called repeatedly to response touch events
+  myNex.listen(); // This function must be called repeatedly to response touch events
                          // from Nextion touch panel. Actually, you should place it in your loop function.
 }
 

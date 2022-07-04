@@ -49,8 +49,11 @@ void setup(){
 }
 
 void loop(){
-  myNex.NextionListen(); // WARNING: This function must be called repeatedly to response touch events
+  myNex.listen(); // WARNING: This function must be called repeatedly to response touch events
                          // from Nextion touch panel. Actually, you should place it in your loop function.
+  if (myNex.cmdAvail()) {
+      readCommand(myNex.getCmd());
+    }
 }
 
 void trigger0(){
@@ -98,4 +101,27 @@ void trigger1(){
                                                 // The text will look like this:
                                                 // 1st line: LED STROBE
                                                 // 2nd line: OFF                                                
+}
+
+void readCommand(const int32_t cmd) {
+    switch (cmd) {
+    case 'T' :
+        callTrigger(myNex.getSubCmd());
+        break;   
+    default:
+        break;
+    }
+}
+
+void callTrigger(const int32_t trig) {
+    switch (trig) {
+    case 0x00 :
+        trigger0();
+        break;
+    case 0x01 :
+        trigger1();
+        break;
+    default:
+        break;
+    }
 }
