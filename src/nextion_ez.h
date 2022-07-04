@@ -87,7 +87,6 @@ class nextion_ez {
     void setLastPage(int page);
     bool cmdAvail();
     int getCmd();
-    int getSubCmd();
     int getCmdLen();
 	void begin(unsigned long baud = 9600);
     void writeNum(String, uint32_t);
@@ -167,7 +166,6 @@ class nextion_ez {
     bool _cmdAvail;
     byte _cmdGroup;
     byte _cmdLength;
-    byte _subCmd;
 
     int _currentPageId;  
     int _lastCurrentPageId;

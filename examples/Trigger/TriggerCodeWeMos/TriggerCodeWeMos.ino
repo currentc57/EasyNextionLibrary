@@ -105,7 +105,7 @@ void trigger1(){
 void readCommand(const int32_t cmd) {
     switch (cmd) {
     case 'T' :
-        callTrigger(myNex.getSubCmd());
+        callTrigger(myNex.readByte());
         break;   
     default:
         break;
