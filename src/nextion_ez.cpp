@@ -44,8 +44,16 @@ int nextion_ez::getCurrentPage(){   //returns the current page id
     return _currentPageId;
 }
 
+void nextion_ez::setCurrentPage(int page) {  // set the current page id
+    _currentPageId = page;
+}
+
 int nextion_ez::getLastPage(){      //returns the previous page id 
     return _lastCurrentPageId;
+}
+
+void nextion_ez::setLastPage(int page) {  // set the last page id
+    _lastCurrentPageId = page;
 }
 
 bool nextion_ez::cmdAvail(){        //returns true if commands in the buffer

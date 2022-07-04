@@ -82,7 +82,9 @@ class nextion_ez {
 	public:
     nextion_ez(HardwareSerial& serial);
     int getCurrentPage();
+    void setCurrentPage(int page);
     int getLastPage();
+    void setLastPage(int page);
     bool cmdAvail();
     int getCmd();
     int getSubCmd();
