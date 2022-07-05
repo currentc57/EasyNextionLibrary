@@ -82,7 +82,7 @@ void readCommand(const int32_t cmd) {       // parse the 1st command byte and de
     case 'T' :                              // standard Easy Nextion Library commands start with "T"
         callTrigger(myNex.readByte());      // so we need the second byte to know what function to call
         break;   
-    default:
+    default:                                // custom commands can be added by expanding this switch statement
         break;
     }
 }
