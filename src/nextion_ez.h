@@ -94,7 +94,7 @@ class nextion_ez {
     void pushCmdArg(uint32_t val);
     void sendCmd(String);
     void addWave(uint8_t id, uint8_t channel, uint8_t val);
-    void writeStr(String, String txt = "cmd");
+    void writeStr(String, String);
 	void listen(void);
     uint32_t readNum(String);
     String readStr(String);
