@@ -66,10 +66,6 @@ int nextion_ez::getCmd(){           //returns the 1st command byte
     return _cmdGroup;
 }
 
-int nextion_ez::getSubCmd(){        //returns the 2nd command byte
-    return _subCmd;
-}
-
 int nextion_ez::getCmdLen(){        //'returns the number of command bytes (for use in custom commands)
     return _cmdLength;
 }
@@ -453,36 +449,7 @@ void nextion_ez::readCommand(){
       _lastCurrentPageId = _currentPageId;
       _currentPageId = _serial->read();                   
       break;
-      
-      
-    case 'T':   /* Or <case 0x54:>  If 'T' matches, we have the command group "Trigger". 
-                 * The next byte is the trigger <Id> according to our protocol.
-                 *
-                 * We have to write in a Touch Event on Nextion the following: < printh 23 02 54 xx >
-                 * (where xx is the trigger id in HEX, 01 for 1, 02 for 2, ... 0A for 10 etc).
-                 * With the switch(){case}, we call a predefined void with prefixed names
-                 * as we have declare them on trigger.cpp file. Starting from trigger0()......up to trigger50()
-                 * The maximum number of predefined void is 255
-                 * We declare the trigger in your code as a function, 
-                 * in order to write any kind of code and run it, by sending the < printh > command needed,
-                 * from a Touch event on Nextion, such as pressing a button. Example:
-                 */
-                /**                   void trigger0(){
-                                        digitalWrite(13, HIGH); // sets the digital pin 13 on
-                                        delay(1000);            // waits for a second
-                                        digitalWrite(13, LOW);  // sets the digital pin 13 off
-                                      }
-                 */
-                /* In Touch Press Event of a button on Nextion write <printh 23 02 54 01>
-                 * Every time we press the Button the command <printh 23 02 54 01> will be sent over Serial
-                 * Then, the library will call the void trigger1()
-                 * the code inside the trigger1() will run once ...
-                 */
-        _cmdAvail = true;
-        _cmdGroup = _cmd1;  // stored in the public variable cmdGroup for later use in the main code
-        _subCmd = _serial->read();
-      break;
-    
+        
     default:            //custom commands can be variable length, we pull just the first and leave the rest for main code to deal with 
       _cmdGroup = _cmd1;  // stored in the public variable cmdGroup for later use in the main code
       _cmdLength = _len;  // stored in the public variable cmdLength for later use in the main code

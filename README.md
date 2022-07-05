@@ -19,45 +19,47 @@ Full documentation on the Arduino Easy Nextion Library and protocol can be found
 
 Differences between the Arduino library and this library
 
-1. The Arduino implementation automatically calls trigger functions, stored in a separate file,
+1. The original Easy Nextion library automatically calls trigger functions, stored in a separate file,
     in response to Nextion commands.
-        This object provides the methods cmdAvail(), getCmd(). getSubCmd() and readByte()
+        This object provides the functions `cmdAvail()`, `getCmd()`, and `readByte()`
         to retreave the command packets sent from the Nextion.
 
-2. The Arduino C++ library uses a single overloaded function writeStr() to send commands and
+2. The original library uses a single overloaded function `writeStr()` to send commands and
     update string values on the Nextion.
-        This object uses separate methods sendCmd() and writeStr().
+        This object uses separate functions `sendCmd()` and `writeStr()`.
 
-3. A argument fifo has been added to allow a new method pushCmdArg() that can be used to
-    provide a variable number of arguments to sendCmd().
+3. An argument fifo has been added to allow a new function `pushCmdArg()` that can be used to
+    provide a variable number of arguments to `sendCmd()`.
 
-4. The the equivilent of the Arduino NextionListen() function has been named listen()
-    in this implementation..
+4. The the original library's `NextionListen()` function has been named `listen()`
+    in this implementation.
 
-5. This object adds a method called addWave() to create a quick and easy interface to the
+5. This object adds a function called `addWave()` to create a quick and easy interface to the
     Nextion waveform add command.
 
 6. In this object the currentPageId and lastCurrentPageId variables can be accessed with the
-    methods getCurrentPage() and getLastPage()
+    functions `getCurrentPage()`, `getLastPage()`, `setCurrentPage()` and `setLastPage()`
 
 **NOTE**: `.HMI` files for Nextion Editor are also included in the demo folder.
 
 ## The public functions
-- `start()`
+- `begin()`
 - `writeNum()`
 - `writeStr()`
-- `sendCmd()`
+- `writeByte()`
 - `pushCmdArg()`
+- `sendCmd()`
 - `addWave()`
 - `readNum()`
 - `readStr()` 
+- `readByte()`
 - `cmdAvail()`
 - `getCmd()`
-- `getSubCmd()`
-- `readByte()`
-- `writeByte()`
+- `getCmdLen()`
 - `getCurrentPage()`
 - `getLastPage()`
+- `setCurrentPage()`
+- `setLastPage()`
 
 In order for the object to update the Id of the current page, you must write the Preinitialize Event of every page: `printh 23 02 50 XX` , where `XX` the id of the page in HEX.
 Your code can then read the current page and previous page using the `getCurrentPage()` and `getLastPage()` functions.
@@ -65,16 +67,39 @@ Your code can then read the current page and previous page using the `getCurrent
 Standard Easy Nextion Library commands are sent from the Nextion display with `printh 23 02 54 XX` , where `XX` is the id for the command in HEX.  
 Your code should call the `listen()` function frequently to check for new commands from the display.  You can then use the `getAvail()`, `getCmd()` and `getSubCmd()` functions to parse any commands.
 
-example:
-```
-
-```
-
 Example:
-```
+``` C++
+void loop {
+  myNex.listen();                           // This function must be called repeatedly to response touch events
+                                            // from Nextion touch panel. You should place it in your loop or timer interrupt function.
+  if (myNex.cmdAvail()) {                   // has the nextion sent a command?
+      readCommand(myNex.getCmd());          // get the command byte and see parse it    
+    }
+}
 
-```
+void readCommand(const int32_t cmd) {       // parse the 1st command byte and decide how to proceed
+    switch (cmd) {
+    case 'T' :                              // standard Easy Nextion Library commands start with "T"
+        callTrigger(myNex.readByte());      // so we need the second byte to know what function to call
+        break;   
+    default:                                // custom commands can be added by expanding this switch statement
+        break;
+    }
+}
 
+void callTrigger(const int32_t trig) {      // use the 2nd command byte from nextion and call associated method
+    switch (trig) {
+    case 0x00 :
+        trigger0();                         // the orginal Easy Nextion library uses numbered trigger functions
+        break;
+    case 0x01 :
+        runCount();                         // but since we are parsing ourselves, we can call any method we want
+        break;
+    default:
+        break;
+    }
+}
+```
 
 ##  Usefull Tips
 
@@ -106,6 +131,10 @@ As an Example:
  A global Number component n0 on page1 is accessed by **page1.n0** . 
 A local Number component n0 on page1 can be accessed by page1.n0 or n0, but there is little sense to try access a local component if the page is not loaded. Only the component attributes of a global component are kept in memory. Event code is never global in nature.
 
+## Compatibility
+* Propeller     (https://github.com/parallaxinc/propeller spin version in P1 folder)
+* Propeller2    (https://github.com/parallaxinc/propeller spin2 version in P2 folder)
+* Arduino       (https://github.com/currentc57/nextion_ez)
 
 ## Licence 
 

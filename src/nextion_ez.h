@@ -87,7 +87,6 @@ class nextion_ez {
     void setLastPage(int page);
     bool cmdAvail();
     int getCmd();
-    int getSubCmd();
     int getCmdLen();
 	void begin(unsigned long baud = 9600);
     void writeNum(String, uint32_t);
@@ -95,7 +94,7 @@ class nextion_ez {
     void pushCmdArg(uint32_t val);
     void sendCmd(String);
     void addWave(uint8_t id, uint8_t channel, uint8_t val);
-    void writeStr(String, String txt = "cmd");
+    void writeStr(String, String);
 	void listen(void);
     uint32_t readNum(String);
     String readStr(String);
@@ -167,7 +166,6 @@ class nextion_ez {
     bool _cmdAvail;
     byte _cmdGroup;
     byte _cmdLength;
-    byte _subCmd;
 
     int _currentPageId;  
     int _lastCurrentPageId;
