@@ -135,6 +135,7 @@ A local Number component n0 on page1 can be accessed by page1.n0 or n0, but ther
 * Propeller     (https://github.com/parallaxinc/propeller/tree/master/libraries/community/p1/All/nextion_ez)
 * Propeller2    (https://github.com/parallaxinc/propeller/tree/master/libraries/community/p2/All/nextion_ez)
 * Arduino       (https://github.com/currentc57/nextion_ez)
+* Energia       (https://github.com/currentc57/nextion_ez)
 
 ## Licence 
 
