@@ -50,6 +50,9 @@ void setup(){
 void loop(){
   myNex.listen(); // This function must be called repeatedly to response touch events
                          // from Nextion touch panel. Actually, you should place it in your loop function.
+  if (myNex.cmdAvail()) {
+    readCommand(myNex.getCmd());
+  }
 }
 
 void trigger0(){
@@ -68,4 +71,26 @@ void trigger0(){
     myNex.writeNum("b0.bco", 63488); // Set button b0 background color to RED (color code: 63488)
     myNex.writeStr("b0.txt", "OFF"); // Set button b0 text to "ON"
   }
+}
+
+void nxRdCommand(const int32_t cmd) {                                           // get the command 
+    switch (cmd) {
+    case 'T' :
+        nxCallTrigger(nextion.readByte());                                      // get the trigger number and call the associated routine
+        break;
+    
+    default:
+        break;
+    }
+}
+
+void nxCallTrigger(const int32_t trig) {
+    switch (trig) {
+    case 0x00 :
+        trigger0();
+        break;
+
+    default:
+        break;
+    }
 }

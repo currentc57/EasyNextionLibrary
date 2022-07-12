@@ -52,8 +52,8 @@ void loop(){
   myNex.listen(); // WARNING: This function must be called repeatedly to response touch events
                          // from Nextion touch panel. Actually, you should place it in your loop function.
   if (myNex.cmdAvail()) {
-      readCommand(myNex.getCmd());
-    }
+    readCommand(myNex.getCmd());
+  }
 }
 
 void trigger0(){

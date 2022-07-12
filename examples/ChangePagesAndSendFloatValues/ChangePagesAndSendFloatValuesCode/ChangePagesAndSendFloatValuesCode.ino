@@ -122,7 +122,7 @@ void setup(){
   dht.begin();
   
   delay(500);               // give Nextion some time to finish initialize
-  myNex.writeStr("page 0"); // For synchronizing Nextion page in case of reset to Arduino
+  myNex.sendCmd("page 0"); // For synchronizing Nextion page in case of reset to Arduino
   delay(50);
   myNex.setLastPage(1);       // At the first run of the loop, the currentPageId and the lastCurrentPageId
                                // must have different values, due to run the function firstRefresh()
