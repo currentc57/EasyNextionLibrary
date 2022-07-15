@@ -132,8 +132,8 @@ As an Example:
 A local Number component n0 on page1 can be accessed by page1.n0 or n0, but there is little sense to try access a local component if the page is not loaded. Only the component attributes of a global component are kept in memory. Event code is never global in nature.
 
 ## Compatibility
-* Propeller     (https://github.com/parallaxinc/propeller/tree/master/libraries/community/p1/All/nextion_ez)
-* Propeller2    (https://github.com/parallaxinc/propeller/tree/master/libraries/community/p2/All/nextion_ez)
+* Propeller1    (https://github.com/currentc57/nextion_ez_propeller1)
+* Propeller2    (https://github.com/currentc57/nextion_ez_propeller2)
 * Arduino       (https://github.com/currentc57/nextion_ez)
 * Energia       (https://github.com/currentc57/nextion_ez)
 
