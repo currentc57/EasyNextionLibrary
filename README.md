@@ -1,6 +1,6 @@
   
 
-# nextion_ez 
+# nextion_ez library for Arduino compatible controllers
 
 ## Description
 
