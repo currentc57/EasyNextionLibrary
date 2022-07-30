@@ -21,7 +21,7 @@
 nextion_ez::nextion_ez(HardwareSerial& serial){  // Constructor's parameter is the Serial we want to use
   _serial = &serial;
 }
-
+//------------------------------------------------------------------------------
 void nextion_ez::begin(unsigned long baud){
   _serial->begin(baud);  // We pass the initialization data to the objects (baud rate) default: 9600
   
@@ -39,37 +39,37 @@ void nextion_ez::begin(unsigned long baud){
       _serial->read();                // Read and delete bytes
   }
 }
-
+//------------------------------------------------------------------------------
 int nextion_ez::getCurrentPage(){   //returns the current page id
     return _currentPageId;
 }
-
+//------------------------------------------------------------------------------
 void nextion_ez::setCurrentPage(int page) {  // set the current page id
     _currentPageId = page;
 }
-
+//------------------------------------------------------------------------------
 int nextion_ez::getLastPage(){      //returns the previous page id 
     return _lastCurrentPageId;
 }
-
+//------------------------------------------------------------------------------
 void nextion_ez::setLastPage(int page) {  // set the last page id
     _lastCurrentPageId = page;
 }
-
+//------------------------------------------------------------------------------
 bool nextion_ez::cmdAvail(){        //returns true if commands in the buffer
     bool avail = _cmdAvail;
     _cmdAvail = false;
     return avail;
 }
-
+//------------------------------------------------------------------------------
 int nextion_ez::getCmd(){           //returns the 1st command byte 
     return _cmdGroup;
 }
-
+//------------------------------------------------------------------------------
 int nextion_ez::getCmdLen(){        //'returns the number of command bytes (for use in custom commands)
     return _cmdLength;
 }
-
+//------------------------------------------------------------------------------
 /*
  * -- writeNum(String, uint32_t): for writing in components' numeric attribute
  * String = objectname.numericAttribute (example: "n0.val"  or "n0.bco".....etc)
@@ -86,7 +86,7 @@ void nextion_ez::writeNum(String compName, uint32_t val){
     _serial->print(_numVal);
 	_serial->print("\xFF\xFF\xFF");
 }
-
+//------------------------------------------------------------------------------
 /*
  * -- writeByte(uint8_t): Main purpose and usage is for sending the raw data required by the addt command
  * Where we need to write raw bytes to serial 
@@ -97,24 +97,27 @@ void nextion_ez::writeNum(String compName, uint32_t val){
 void  nextion_ez::writeByte(uint8_t val){
     _serial->write(val);
 }
-
+//------------------------------------------------------------------------------
 /*
  * -- pushCmdArg(uint32_t): Used to load the argument FIFO with numeric arguments that are to be sent with the command using sendCmd()
-* uint32_t = argument (example: 1 or 255)
- * Syntax: | myObject.pushCmdArg(1);   |  or  | myObject.pushCmdArg(3); |
- *         | loads 1 into the FIFO     |      | loads 3 into the FIFO    |
+ *                      if using FIFO, the command string must include any required spaces or commas before the first FIFO argument
+ * String   = command (example: "page"  or "repo")
+ *           myObject.pushCmdArg(1);              myObject.pushCmdArg(3);
+ * Syntax: | myObject.sendCmd("page ");   |  or  | myObject.sendCmd("repo va0,"); |
+ *         | change to page 1            |      |  Refresh component with the id of 3  |
  */
-
+//------------------------------------------------------------------------------
 void nextion_ez::pushCmdArg(uint32_t argument){
     _cmdFifo[_cmdFifoHead] = argument;
     if (_cmdFifoHead++ > 15) _cmdFifoHead = 0;
 }
-
+//------------------------------------------------------------------------------
 /*
  * -- sendCmd(String): for sending a command string along with any numeric arguments previously pushed to the FIFO
- * String   = command (example: "page"  or "ref")
- *           myObject.pushCmdArg(1);              myObject.pushCmdArg(3);
- * Syntax: | myObject.sendCmd("page");   |  or  | myObject.sendCmd("ref"); |
+ *                      if using FIFO, the command string must include any required spaces or commas before the first FIFO argument
+ * String   = command (example: "page"  or "repo")
+ *                                                   myObject.pushCmdArg(3);
+ * Syntax: | myObject.sendCmd("page 1");   |  or  | myObject.sendCmd("repo va0,"); |
  *         | change to page 1            |      |  Refresh component with the id of 3  |
  */
 void nextion_ez::sendCmd(String command){ 
@@ -132,7 +135,7 @@ void nextion_ez::sendCmd(String command){
     _serial->print(_component);
 
     if(_count > 0) {
-        _serial->print(" ");
+        //_serial->print(" ");                     
         for (x = 0; x < _count; x++) {
             if (x > 0) _serial->print(",");         // only need commas between arguments, not between command and 1st argument
             _argument = _cmdFifo[_cmdFifoTail];
@@ -142,7 +145,7 @@ void nextion_ez::sendCmd(String command){
     }
     _serial->print("\xFF\xFF\xFF");
 }
-
+//------------------------------------------------------------------------------
 /*
  * -- addWave(uint8_t, uint8_t, uint8_t): for writing in components' text attributes
  * uint8_t No1 = id number of the waveform object (id number not name)
@@ -160,7 +163,7 @@ void nextion_ez::addWave(uint8_t id, uint8_t channel, uint8_t val){
     _serial->print(val);
     _serial->print("\xFF\xFF\xFF");
 }
-
+//------------------------------------------------------------------------------
 /*
  * -- writeStr(String, String): for writing in components' text attributes
  * String No1 = objectname.textAttribute (example: "t0.txt"  or "b0.txt")
@@ -178,7 +181,7 @@ void nextion_ez::writeStr(String command, String txt){
     _serial->print("\"");
     _serial->print("\xFF\xFF\xFF");
 }
-
+//------------------------------------------------------------------------------
 String nextion_ez::readStr(String TextComponent){
   
   String _Textcomp = TextComponent;  
@@ -263,7 +266,7 @@ String nextion_ez::readStr(String TextComponent){
 
   return _readString;
 }
-
+//------------------------------------------------------------------------------
 /*
  * -- readNumber(String): We use it to read the value of a components' numeric attribute on Nextion
  * In every component's numeric attribute (value, bco color, pco color...etc)
@@ -377,7 +380,7 @@ uint32_t nextion_ez::readNum(String component){
   
   return _numberValue;
 }
-
+//------------------------------------------------------------------------------
 /*
  * -- readByte(): Main purpose and usage is for the custom commands read
  * Where we need to read bytes from Serial inside user code
@@ -390,7 +393,7 @@ int  nextion_ez::readByte(){
  return _tempInt;
   
 }
-
+//------------------------------------------------------------------------------
 /*
  * -- listen(): It uses a custom protocol to identify commands from Nextion Touch Events
  * For advanced users: You can modify the custom protocol to add new group commands.
@@ -433,7 +436,7 @@ void nextion_ez::listen(){
 		}
 	}
 }
-
+//------------------------------------------------------------------------------
 void nextion_ez::readCommand(){
 
 				

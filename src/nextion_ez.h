@@ -81,24 +81,30 @@ class nextion_ez {
 
 	public:
     nextion_ez(HardwareSerial& serial);
-    int getCurrentPage();
-    void setCurrentPage(int page);
-    int getLastPage();
-    void setLastPage(int page);
+    void begin(unsigned long baud = 9600);
+    
+    void listen(void);
+    
     bool cmdAvail();
     int getCmd();
     int getCmdLen();
-	void begin(unsigned long baud = 9600);
+    int readByte();
+    
+    int getCurrentPage();
+    int getLastPage();
+    uint32_t readNum(String);
+    String readStr(String);
+    
+    void setCurrentPage(int page);
+    void setLastPage(int page);
     void writeNum(String, uint32_t);
     void writeByte(uint8_t val);
+    void writeStr(String, String);
+    
     void pushCmdArg(uint32_t val);
     void sendCmd(String);
     void addWave(uint8_t id, uint8_t channel, uint8_t val);
-    void writeStr(String, String);
-	void listen(void);
-    uint32_t readNum(String);
-    String readStr(String);
-    int readByte();
+    
     
       //--------------------------------------- 
      // public variables
