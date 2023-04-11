@@ -109,7 +109,8 @@ void  nextion_ez::writeByte(uint8_t val){
 //------------------------------------------------------------------------------
 void nextion_ez::pushCmdArg(uint32_t argument){
     _cmdFifo[_cmdFifoHead] = argument;
-    if (_cmdFifoHead++ > 15) _cmdFifoHead = 0;
+    _cmdFifoHead++;
+    if (_cmdFifoHead > 15) _cmdFifoHead = 0;
 }
 //------------------------------------------------------------------------------
 /*
@@ -140,7 +141,8 @@ void nextion_ez::sendCmd(String command){
             if (x > 0) _serial->print(",");         // only need commas between arguments, not between command and 1st argument
             _argument = _cmdFifo[_cmdFifoTail];
             _serial->print(_argument);
-            if(_cmdFifoTail++ > 15) _cmdFifoTail = 0;
+            _cmdFifoTail++;
+            if(_cmdFifoTail > 15) _cmdFifoTail = 0;
         }
     }
     _serial->print("\xFF\xFF\xFF");
